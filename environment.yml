@@ -1,10 +1,7 @@
-name: base
+name: "base"
 channels:
-  - conda-forge
   - defaults
-dependencies:
-  - pandas
-  - catboost
-  - seaborn
-  - shap
-prefix: /opt/base
+# dependencies:
+# - add packages here
+# - one per line
+prefix: "/opt/conda"
