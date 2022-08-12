@@ -1,0 +1,33 @@
+{
+  "@renku_data_type": "renku.domain_model.project.Project",
+  "@renku_oid": "project",
+  "agent_version": "1.6.0",
+  "annotations": [],
+  "automated_update": true,
+  "creator": {
+    "@renku_data_type": "renku.domain_model.provenance.agent.Person",
+    "@renku_data_value": {
+      "affiliation": null,
+      "alternate_name": null,
+      "email": "lucas.chizzali@epfl.ch",
+      "id": "mailto:lucas.chizzali@epfl.ch",
+      "name": "Lucas Chizzali"
+    }
+  },
+  "date_created": {
+    "@renku_data_type": "datetime.datetime",
+    "@renku_data_value": "2022-08-12T08:11:32+00:00"
+  },
+  "description": "An example-based explanaible AI (XAI) technique to explain decision tree based ensemble methods.\nThe technique uses the Hamming distance of leaf indices to measure similarity between a given test and all training instances. It therefore explains a model by identifying training data points that most influenced a given prediction.",
+  "id": "/projects/lucas.chizzali/leafsim",
+  "immutable_template_files": [],
+  "keywords": [],
+  "minimum_renku_version": "1.2.0",
+  "name": "LeafSim",
+  "template_id": "python-minimal",
+  "template_metadata": "{\"__template_source__\": \"https://github.com/SwissDataScienceCenter/renku-project-template\", \"__template_ref__\": \"0.3.3\", \"__template_id__\": \"python-minimal\", \"__namespace__\": \"lucas.chizzali\", \"__automated_update__\": true, \"__repository__\": \"https://renkulab.io/gitlab\", \"__sanitized_project_name__\": \"leafsim\", \"__project_slug__\": \"lucas.chizzali/leafsim\", \"__project_description__\": \"An example-based explanaible AI (XAI) technique to explain decision tree based ensemble methods.\\nThe technique uses the Hamming distance of leaf indices to measure similarity between a given test and all training instances. It therefore explains a model by identifying training data points that most influenced a given prediction.\", \"__renku_version__\": \"1.6.0\", \"name\": \"LeafSim\", \"__name__\": \"LeafSim\", \"__template_version__\": \"50d878ef5a6bc75e7b2e1643e41f8dbf1a889efb\"}",
+  "template_ref": "0.3.3",
+  "template_source": "https://github.com/SwissDataScienceCenter/renku-project-template",
+  "template_version": "50d878ef5a6bc75e7b2e1643e41f8dbf1a889efb",
+  "version": 9
+}
