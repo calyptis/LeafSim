@@ -1,7 +1,14 @@
-name: "base"
+name: base
 channels:
+  - conda-forge
   - defaults
-# dependencies:
-# - add packages here
-# - one per line
-prefix: "/opt/conda"
+dependencies:
+  - pandas
+  - jupyterlab
+  - ipykernel
+  - catboost
+  - seaborn
+  - shap
+  - ipywidgets
+  - modin
+prefix: /opt/anaconda3/envs/base
