@@ -4,11 +4,7 @@ channels:
   - defaults
 dependencies:
   - pandas
-  - jupyterlab
-  - ipykernel
   - catboost
   - seaborn
   - shap
-  - ipywidgets
-  - modin
-prefix: /opt/anaconda3/envs/base
+prefix: /opt/base
