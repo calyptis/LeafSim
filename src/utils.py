@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from matplotlib import colors
 import matplotlib.pylab as plt
@@ -49,27 +50,44 @@ def conditional_highlight(s: pd.Series, val: str) -> list[str]:
 
 
 def get_stylised_similar_cars_table(
-    df,
-    top_n_distances_id,
-    top_n_distances,
-    car_to_explain_id,
-    car_to_explain_idx,
-    top_n_features,
-    target_col,
-    formatting
-):
+    df_train: pd.DataFrame,
+    df_test: pd.DataFrame,
+    top_n_distances_id: np.ndarray,
+    top_n_distances: np.ndarray,
+    car_to_explain_id: int,
+    top_n_features: list[str],
+    formatting: dict[str, str],
+    target_col: str = "price"
+) -> pd.DataFrame:
+    """
+    Generates a stylised table of the most similar cars for a chosen car to be explained (car_to_explain_id).
 
-    d = df.loc[
+    Styling:
+    - background gradient of numeric feature columns based on the percentage deviation from the car to be explained.
+    - single colour background for categorical feature columns based on whether they are
+      the same for the car to be explained.
+
+    :param df_train: Dataframe containing training examples (from which the most similar cars are identified)
+    :param df_test: Dataframe containing test examples (cars we want to generate explanations for)
+    :param top_n_distances_id: The indices of the training cars that are most similar to a test car
+    :param top_n_distances: The Hamming distance of the most similar training cars (same order as top_n_distances_id)
+    :param car_to_explain_id: Index of the test car to explain
+    :param top_n_features: The list of feature columns to visualise in the stylised table
+    :param formatting: Custom formatting of the feature columns passed on to pd.DataFrame().style.format(...)
+    :param target_col: The name of the target column
+    :return: Stylised dataframe holding the top N most similar cars
+    """
+    d = df_test.loc[
         car_to_explain_id,
         ["predicted_price", "mileage", "year", "enginesize", "brand",
          "model", "fueltype", "transmission"]
     ].to_dict()
 
     df_to_show = (
-        df
-        .loc[top_n_distances_id[car_to_explain_idx, :]]
+        df_train
+        .loc[top_n_distances_id[car_to_explain_id, :]]
         .assign(
-            similarity=lambda x: 1 - top_n_distances[car_to_explain_idx, :],
+            similarity=lambda x: 1 - top_n_distances[car_to_explain_id, :],
             # Measure the relative price difference between similar cars and the car to explain
             # This column is used to colour columns actually shown in the table
             diff_price=lambda x: (x.price - d["predicted_price"]).abs() / d["predicted_price"],
@@ -89,14 +107,22 @@ def get_stylised_similar_cars_table(
         .format(formatting)
         # Add a background colour to the certain column based on how
         # far away they are from the car to be predicted (in relative terms)
-        .apply(conditional_background_gradient, subset="price", cmap="Reds", df=df_to_show, col="diff_price",
-               upper_threshold=1)
-        .apply(conditional_background_gradient, subset="mileage", cmap="Reds", df=df_to_show, col="diff_mileage",
-               upper_threshold=1.5)
-        .apply(conditional_background_gradient, subset="year", cmap="Reds", df=df_to_show, col="diff_year",
-               upper_threshold=1e-3)
-        .apply(conditional_background_gradient, subset="enginesize", cmap="Reds", df=df_to_show, col="diff_enginesize",
-               upper_threshold=1)
+        .apply(
+            conditional_background_gradient, subset="price",
+            cmap="Reds", df=df_to_show, col="diff_price", upper_threshold=1
+        )
+        .apply(
+            conditional_background_gradient, subset="mileage",
+            cmap="Reds", df=df_to_show, col="diff_mileage", upper_threshold=1.5
+        )
+        .apply(
+            conditional_background_gradient, subset="year",
+            cmap="Reds", df=df_to_show, col="diff_year", upper_threshold=1e-3
+        )
+        .apply(
+            conditional_background_gradient, subset="enginesize",
+            cmap="Reds", df=df_to_show, col="diff_enginesize", upper_threshold=1
+        )
         # Add a background gradient for the similarity column
         .background_gradient(subset="similarity", cmap="Blues", vmax=1, vmin=0)
         # Highlight cells in the categorical columns if they differ from the value of the car to explain
@@ -109,18 +135,41 @@ def get_stylised_similar_cars_table(
     return df_to_show
 
 
-def get_similarity_plots(df, df_train, distances, car_to_explain_idx, car_to_explain_id, test_avg_similarity):
+def get_similarity_plots(
+    df_train: pd.DataFrame,
+    df_test: pd.DataFrame,
+    distances: np.ndarray,
+    car_to_explain_id: int,
+    test_avg_similarity: np.ndarray
+) -> None:
+    """
+    Visualises two matplotlib plots to summarise different similarity aspects.
+
+    The first plot on the left plots the price versus LeafSim score for all the training samples given a specific
+    car one wishes to explain (car_to_explain_id).
+    The second plot on the right plots the distribution of the average LeafSim score of the top 50 most similar cars
+    for each of the cars in df_test.
+
+    An interpretation of these plots can be found in the notebook.
+
+    :param df_train:
+    :param df_test:
+    :param distances:
+    :param car_to_explain_id:
+    :param test_avg_similarity:
+    :return: Shows matplotlib figure
+    """
     tmp = pd.DataFrame({
-        "similarity": 1 - distances[car_to_explain_idx, :],
+        "similarity": 1 - distances[car_to_explain_id, :],
         "price": df_train.price
     })
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
     axes = axes.flatten()
     ax = axes[0]
-    ax.axhline(df.loc[car_to_explain_id, "predicted_price"], linewidth=1, c="darkviolet", linestyle="--",
+    ax.axhline(df_test.loc[car_to_explain_id, "predicted_price"], linewidth=1, c="darkviolet", linestyle="--",
                label="Car to explain - predicted price")
-    ax.axhline(df.loc[car_to_explain_id, "price"], linewidth=1, c="royalblue", linestyle="--",
+    ax.axhline(df_test.loc[car_to_explain_id, "price"], linewidth=1, c="royalblue", linestyle="--",
                label="Car to explain - actual price")
     sns.lineplot(
         data=tmp, x="similarity", y="price", linewidth=1, color="darkviolet", alpha=0.5,
@@ -136,7 +185,7 @@ def get_similarity_plots(df, df_train, distances, car_to_explain_idx, car_to_exp
     ax = axes[1]
     sns.histplot(test_avg_similarity, ax=ax, stat="probability", color="darkviolet", alpha=0.5,
                  label="All cars in test set")
-    ax.axvline(test_avg_similarity[car_to_explain_idx], linewidth=1, c="royalblue", label="Car to explain")
+    ax.axvline(test_avg_similarity[car_to_explain_id], linewidth=1, c="royalblue", label="Car to explain")
     ax.set_title("Distribution of Average of Top 50 LeafSim Scores")
     ax.set_xlabel("Average Top 50 LeafSim Score [%]")
     ax.set_ylabel("Share [%]")
