@@ -336,3 +336,6 @@ tags
 .renku.lock
 .renku/tmp
 .renku/cache
+
+# Project specific
+notebooks/catboost_info
