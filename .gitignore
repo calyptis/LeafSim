@@ -339,3 +339,5 @@ tags
 
 # Project specific
 notebooks/catboost_info
+notebooks/LeafSim.html
+notebooks/LeafSim_files
