@@ -149,7 +149,7 @@ def get_similarity_plots(
     df_test: pd.DataFrame,
     distances: np.ndarray,
     car_to_explain_id: int,
-    test_avg_similarity: np.ndarray,
+    test_avg_similarity: np.ndarray
 ) -> None:
     """
     Visualises two matplotlib plots to summarise different similarity aspects.
@@ -172,7 +172,7 @@ def get_similarity_plots(
         {"similarity": 1 - distances[car_to_explain_id, :], "price": df_train.price}
     )
 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+    fig, axes = plt.subplots(1, 2, figsize=(20, 8))
     axes = axes.flatten()
     ax = axes[0]
     ax.axhline(
@@ -222,7 +222,7 @@ def get_similarity_plots(
         c="royalblue",
         label="Car to explain",
     )
-    ax.set_title("Distribution of Average Top 50 LeafSim Scores")
+    ax.set_title("Distribution of Average Top 50 LeafSim Scores", fontsize=22)
     ax.set_xlabel("Average Top 50 LeafSim Score [%]")
     ax.set_ylabel("Share [%]")
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f"{x * 100:,.0f}"))
