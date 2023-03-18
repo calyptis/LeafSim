@@ -14,3 +14,7 @@ The proposed technique is:
 
 - `notebooks/LeafSim.ipynb` contains the code producing the results and content referenced in the blog post.
 - `data/` contains the sale prices of used cars as downloaded from [Kaggle](https://www.kaggle.com/datasets/adityadesai13/used-car-dataset-ford-and-mercedes?select=merc.csv).
+
+# Notes
+
+- This repo was clone from the original [Renku Gitlab repository](https://renkulab.io/gitlab/lucas.chizzali/leafsim)
