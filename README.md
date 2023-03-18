@@ -1,4 +1,8 @@
-# Purpose of repo
+# LeafSim
+
+[Blog Post](https://datascience.ch/leafsim/) | [Blog Post with Code](https://calyptis.github.io/leafsim/)
+
+## Purpose of repo
 
 This repository introduces `LeafSim`, an example-based **explainable AI** (**XAI**) technique for decision tree based ensemble methods.<br/>
 The process applies the Hamming distance on leaf indices to measure similarity between instances in the test and training set.<br/>
@@ -10,11 +14,11 @@ The proposed technique is:
 - straightforward to implement & maintain in production
 - computationally lightweight
 
-# Structure of repo
+## Structure of repo
 
 - `notebooks/LeafSim.ipynb` contains the code producing the results and content referenced in the blog post.
 - `data/` contains the sale prices of used cars as downloaded from [Kaggle](https://www.kaggle.com/datasets/adityadesai13/used-car-dataset-ford-and-mercedes?select=merc.csv).
 
-# Notes
+## Notes
 
-- This repo was clone from the original [Renku Gitlab repository](https://renkulab.io/gitlab/lucas.chizzali/leafsim)
+- This repo was cloned from the original [Renku Gitlab repository](https://renkulab.io/gitlab/lucas.chizzali/leafsim)
