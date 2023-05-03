@@ -1,6 +1,6 @@
 # LeafSim
 
-[Blog Post](https://datascience.ch/leafsim/) | [Blog Post with Code](https://calyptis.github.io/leafsim/)
+[Blog Post](https://datascience.ch/leafsim/) | [Blog Post with Code](https://calyptis.github.io/LeafSim/)
 
 ## Purpose of repo
 
